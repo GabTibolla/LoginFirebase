@@ -26,5 +26,16 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     on<SignOutRequired>((event, emit) async {
       await _userRepository.logOut();
     });
+    on<SignInGoogleRequired>((event, emit) async {
+      emit(SignInProgress());
+      try {
+        await _userRepository.signInGoogle();
+        emit(SignInSuccess());
+      } on FirebaseAuthException catch (e) {
+        emit(SignInFailure(message: e.message));
+      } catch (e) {
+        emit(const SignInFailure());
+      }
+    });
   }
 }

@@ -6,8 +6,6 @@ part 'user_model_bloc_state.dart';
 
 class UserModelBlocBloc extends Bloc<UserModelBlocEvent, UserModelBlocState> {
   UserModelBlocBloc() : super(UserModelBlocInitial()) {
-    on<UserModelBlocEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+    on<UserModelBlocEvent>((event, emit) {});
   }
 }

@@ -15,10 +15,16 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       emit(SignUpProgress());
       try {
         UserModel user = await _userRepository.signUp(event.userModel, event.password);
+
+        if (user == UserModel.empty) {
+          emit(const SignUpFailure(message: "e-mail already in use or is invalid"));
+          return;
+        }
+
         await _userRepository.setUserData(user);
         emit(SignUpSuccess());
       } catch (e) {
-        emit(SignUpFailure());
+        emit(const SignUpFailure());
       }
     });
   }

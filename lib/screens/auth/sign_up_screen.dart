@@ -19,6 +19,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final nameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   IconData iconPassword = CupertinoIcons.eye_fill;
+  String? errorMsg;
   bool obscurePassword = true;
   bool signUpRequired = false;
 
@@ -42,6 +43,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
             signUpRequired = true;
           });
         } else if (state is SignUpFailure) {
+          setState(() {
+            signUpRequired = false;
+            errorMsg = state.message ?? "";
+          });
           return;
         }
       },
@@ -58,6 +63,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     hintText: 'Email',
                     obscureText: false,
                     keyboardType: TextInputType.emailAddress,
+                    errorMsg: errorMsg,
                     prefixIcon: const Icon(CupertinoIcons.mail_solid),
                     validator: (val) {
                       if (val!.isEmpty) {
@@ -233,7 +239,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                           )),
                     )
-                  : const CircularProgressIndicator()
+                  : const CircularProgressIndicator(),
             ],
           ),
         ),

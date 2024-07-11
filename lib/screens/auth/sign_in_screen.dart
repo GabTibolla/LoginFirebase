@@ -1,8 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:schedule_barber/blocs/sign_in_bloc/sign_in_bloc.dart';
 import 'package:schedule_barber/screens/auth/components/my_text_field.dart';
+import 'package:sign_in_button/sign_in_button.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -59,7 +62,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   return null;
                 },
                 errorMsg: _erroMsg,
-                prefixIcon: const Icon(Icons.email),
+                prefixIcon: const Icon(CupertinoIcons.mail_solid),
               ),
             ),
             const SizedBox(height: 10),
@@ -79,7 +82,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   return null;
                 },
                 errorMsg: _erroMsg,
-                prefixIcon: const Icon(Icons.lock),
+                prefixIcon: const Icon(CupertinoIcons.lock_fill),
                 suffixIcon: IconButton(
                   onPressed: () {
                     setState(() {
@@ -124,6 +127,72 @@ class _SignInScreenState extends State<SignInScreen> {
                     ),
                   )
                 : const CircularProgressIndicator(),
+            const SizedBox(height: 20),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.9,
+              child: SignInButton(
+                Buttons.google,
+                onPressed: () {
+                  context.read<SignInBloc>().add(const SignInGoogleRequired());
+                },
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                shape: ShapeBorder.lerp(
+                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(60)),
+                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(60)),
+                  0.5,
+                ),
+                elevation: 3,
+              ),
+            ),
+            const SizedBox(height: 5),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.9,
+              child: SignInButton(
+                Buttons.facebook,
+                onPressed: () {
+                  //context.read<SignInBloc>().add(const SignInGoogleRequired());
+                },
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                shape: ShapeBorder.lerp(
+                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(60)),
+                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(60)),
+                  0.5,
+                ),
+                elevation: 3,
+              ),
+            ),
+            const SizedBox(height: 5),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.9,
+              child: SignInButton(
+                Buttons.apple,
+                onPressed: () {
+                  //context.read<SignInBloc>().add(const SignInGoogleRequired());
+                },
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                shape: ShapeBorder.lerp(
+                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(60)),
+                  RoundedRectangleBorder(borderRadius: BorderRadius.circular(60)),
+                  0.5,
+                ),
+                elevation: 3,
+              ),
+            ),
+            // Texto para recuperar a senha bem embaixo da tela
+            const Spacer(),
+            TextButton(
+              onPressed: () {
+                //Navigator.pushNamed(context, '/forgot_password');
+              },
+              child: const Text(
+                "Forgot password?",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
           ],
         ),
       ),

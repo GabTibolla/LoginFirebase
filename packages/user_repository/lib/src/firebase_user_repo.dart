@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:user_repository/src/user_repo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import 'models/models.dart';
 
@@ -32,6 +33,32 @@ class FirebaseUserRepo implements UserRepository {
   }
 
   @override
+  Future<void> signInGoogle() async {
+    try {
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+      googleSignIn.disconnect();
+
+      final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
+
+      if (googleSignInAccount != null) {
+        final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
+
+        final AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleSignInAuthentication.accessToken,
+          idToken: googleSignInAuthentication.idToken,
+        );
+
+        await _firebaseAuth.signInWithCredential(credential);
+      }
+      GoogleAuthProvider googleProvider = GoogleAuthProvider();
+      _firebaseAuth.signInWithProvider(googleProvider);
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
   Future<UserModel> signUp(UserModel userModel, String password) async {
     try {
       UserCredential user = await _firebaseAuth.createUserWithEmailAndPassword(
@@ -42,6 +69,14 @@ class FirebaseUserRepo implements UserRepository {
       userModel = userModel.copyWith(userId: user.user!.uid);
 
       return userModel;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == "email-already-in-use") {
+        return UserModel.empty;
+      } else if (e.code == "invalid-email") {
+        return UserModel.empty;
+      } else {
+        rethrow;
+      }
     } catch (e) {
       log(e.toString());
       rethrow;

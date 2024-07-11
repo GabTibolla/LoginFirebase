@@ -14,6 +14,10 @@ class SignInRequired extends SignInEvent {
   const SignInRequired({required this.email, required this.password});
 }
 
+class SignInGoogleRequired extends SignInEvent {
+  const SignInGoogleRequired();
+}
+
 class SignOutRequired extends SignInEvent {
   const SignOutRequired();
 }
