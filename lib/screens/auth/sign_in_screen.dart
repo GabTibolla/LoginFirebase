@@ -150,7 +150,7 @@ class _SignInScreenState extends State<SignInScreen> {
               child: SignInButton(
                 Buttons.facebook,
                 onPressed: () {
-                  //context.read<SignInBloc>().add(const SignInGoogleRequired());
+                  context.read<SignInBloc>().add(const SignInFacebookRequired());
                 },
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 shape: ShapeBorder.lerp(
@@ -180,16 +180,19 @@ class _SignInScreenState extends State<SignInScreen> {
             ),
             // Texto para recuperar a senha bem embaixo da tela
             const Spacer(),
-            TextButton(
-              onPressed: () {
-                //Navigator.pushNamed(context, '/forgot_password');
-              },
-              child: const Text(
-                "Forgot password?",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
+            Padding(
+              padding: const EdgeInsets.all(5),
+              child: InkWell(
+                onTap: () {},
+                overlayColor: WidgetStateProperty.all(Colors.black),
+                child: const Text(
+                  "Forgot password?",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    decoration: TextDecoration.underline,
+                  ),
                 ),
               ),
             ),

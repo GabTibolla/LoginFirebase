@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:user_repository/src/user_repo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 import 'models/models.dart';
 
@@ -52,6 +53,30 @@ class FirebaseUserRepo implements UserRepository {
       }
       GoogleAuthProvider googleProvider = GoogleAuthProvider();
       _firebaseAuth.signInWithProvider(googleProvider);
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<String> signInFacebook() async {
+    try {
+      final LoginResult result = await FacebookAuth.instance.login();
+
+      final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(result.accessToken!.tokenString);
+
+      await _firebaseAuth.signInWithCredential(facebookAuthCredential);
+
+      return "login-ok";
+    } on FirebaseAuthException catch (e) {
+      if (e.code == "account-exists-with-different-credential") {
+        return "account exists with different credential";
+      } else if (e.code == "invalid-credential") {
+        return "invalid credential";
+      } else {
+        rethrow;
+      }
     } catch (e) {
       log(e.toString());
       rethrow;

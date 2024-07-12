@@ -6,6 +6,7 @@ abstract class UserRepository {
 
   Future<void> signIn(String email, String password);
   Future<void> signInGoogle();
+  Future<void> signInFacebook();
   Future<UserModel> signUp(UserModel userModel, String password);
   Future<void> setUserData(UserModel user);
   Future<void> logOut();
