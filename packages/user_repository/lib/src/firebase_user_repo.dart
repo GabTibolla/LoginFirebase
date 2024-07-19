@@ -51,8 +51,6 @@ class FirebaseUserRepo implements UserRepository {
 
         await _firebaseAuth.signInWithCredential(credential);
       }
-      GoogleAuthProvider googleProvider = GoogleAuthProvider();
-      _firebaseAuth.signInWithProvider(googleProvider);
     } catch (e) {
       log(e.toString());
       rethrow;
@@ -62,7 +60,7 @@ class FirebaseUserRepo implements UserRepository {
   @override
   Future<String> signInFacebook() async {
     try {
-      final LoginResult result = await FacebookAuth.instance.login();
+      final LoginResult result = await FacebookAuth.instance.login(permissions: ["email"]);
 
       final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(result.accessToken!.tokenString);
 
