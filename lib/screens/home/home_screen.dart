@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Container(
         color: Colors.white,
-        child: const Text("You are gay?"),
+        child: const Text("Home Screen"),
       ),
     );
   }
